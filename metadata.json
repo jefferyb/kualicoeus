@@ -1,0 +1,28 @@
+{
+	"name": "jefferyb-kualicoeus",
+	"version": "0.1.0",
+	"author": "jefferyb",
+	"summary": "This module is to help install Kuali Coeus",
+	"license": "Apache 2.0",
+	"source": "https://github.com/jefferyb/jefferyb-kualicoeus",
+	"project_page": "https://github.com/jefferyb/jefferyb-kualicoeus",
+	"issues_url": "https://github.com/jefferyb/jefferyb-kualicoeus/issues",
+	"dependencies": [{
+			"name": "puppetlabs-stdlib",
+			"version_requirement": ">= 4.3.2"
+		},{
+			"name": "puppetlabs-mysql",
+			"version_requirement": ">= 2.3.1"
+		},{
+			"name": "puppetlabs-java",
+			"version_requirement": ">= 1.1.2"
+		},{
+			"name": "puppetlabs-tomcat",
+			"version_requirement": ">= 1.0.1"
+		},{
+			"name": "puppetlabs-firewall",
+			"version_requirement": ">= 1.1.3"
+		}
+	]
+}
+

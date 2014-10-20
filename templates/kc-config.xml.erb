@@ -1,0 +1,13 @@
+<config>
+	<param name="application.http.scheme">http</param>
+	<param name="application.host"><%= scope.lookupvar('kualicoeus::settings::kc_application_host') %></param>
+	<param name="http.port"><%= scope.lookupvar('kualicoeus::settings::kc_http_port') %></param>
+	<param name="app.context.name">${app.code}-${environment}</param>
+
+
+	<!-- KC Client DB -->
+	<param name="datasource.url">jdbc:mysql://localhost:3306/<%= scope.lookupvar('kualicoeus::settings::database') %></param>
+	<param name="datasource.username"><%= scope.lookupvar('kualicoeus::settings::username') %></param>
+	<param name="datasource.password"><%= scope.lookupvar('kualicoeus::settings::password') %></param>
+	<param name="datasource.ojb.platform">MySQL</param>
+</config>
