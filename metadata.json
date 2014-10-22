@@ -1,12 +1,12 @@
 {
 	"name": "jefferyb-kualicoeus",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": "jefferyb",
-	"summary": "This module is to help install Kuali Coeus",
+	"summary": "This module enables you to install Kuali Coeus",
 	"license": "Apache 2.0",
-	"source": "https://github.com/jefferyb/jefferyb-kualicoeus",
-	"project_page": "https://github.com/jefferyb/jefferyb-kualicoeus",
-	"issues_url": "https://github.com/jefferyb/jefferyb-kualicoeus/issues",
+	"source": "https://github.com/jefferyb/kualicoeus",
+	"project_page": "https://github.com/jefferyb/kualicoeus",
+	"issues_url": "https://github.com/jefferyb/kualicoeus/issues",
 	"dependencies": [{
 			"name": "puppetlabs-stdlib",
 			"version_requirement": ">= 4.3.2"

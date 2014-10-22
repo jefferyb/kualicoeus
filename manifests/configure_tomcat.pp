@@ -13,27 +13,35 @@ class kualicoeus::configure_tomcat {
     catalina_base => $kualicoeus::settings::catalina_base,
   } ->
   # Configure
-  tomcat::setenv::entry {
-    'CATALINA_HOME':
-      value       => [$kualicoeus::settings::catalina_base],
-      config_file => "${kualicoeus::settings::catalina_base}/bin/setenv.sh";
+  # THIS FEATURE IS BROKEN IN THE CURRENT VERSION, puppetlabs-tomcat 1.0.1,
+  # BUT WILL TURN IT BACK ON ONCE IT IS RESOLVED
+  # (Their github version of tomcat has the patch but hasn't been brought to the forge)
+  #  tomcat::setenv::entry {
+  #    'CATALINA_HOME':
+  #      value       => [$kualicoeus::settings::catalina_base],
+  #      config_file => "${kualicoeus::settings::catalina_base}/bin/setenv.sh";
+  #
+  #    'CATALINA_PID':
+  #      value       => ["${kualicoeus::settings::catalina_base}/conf/catalina.pid"],
+  #      config_file => "${kualicoeus::settings::catalina_base}/bin/setenv.sh";
+  #
+  #    'JAVA_OPTS':
+  #      value       => [
+  #        '-Djava.awt.headless=true',
+  #        '-ea',
+  #        '-Xmx1024m',
+  #        '-XX:MaxPermSize=512m',
+  #        '-XX:+UseConcMarkSweepGC',
+  #        '-XX:+CMSClassUnloadingEnabled',
+  #        "-Dalt.config.location=${kualicoeus::settings::kc_config_home}/kc-config.xml",
+  #        ],
+  #      quote_char  => '"',
+  #      config_file => "${kualicoeus::settings::catalina_base}/bin/setenv.sh";
+  #  } ->
 
-    'CATALINA_PID':
-      value       => ["${kualicoeus::settings::catalina_base}/conf/catalina.pid"],
-      config_file => "${kualicoeus::settings::catalina_base}/bin/setenv.sh";
-
-    'JAVA_OPTS':
-      value       => [
-        '-Djava.awt.headless=true',
-        '-ea',
-        '-Xmx1024m',
-        '-XX:MaxPermSize=512m',
-        '-XX:+UseConcMarkSweepGC',
-        '-XX:+CMSClassUnloadingEnabled',
-        "-Dalt.config.location=${kualicoeus::settings::kc_config_home}/kc-config.xml",
-        ],
-      quote_char  => '"',
-      config_file => "${kualicoeus::settings::catalina_base}/bin/setenv.sh";
+  file { "${kualicoeus::settings::catalina_base}/bin/setenv.sh":
+    ensure  => 'present',
+    content => template('kualicoeus/setenv.sh.erb'),
   } ->
   tomcat::service { 'default':
     use_jsvc      => false,

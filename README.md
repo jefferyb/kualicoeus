@@ -38,23 +38,6 @@ This module will affect:
 
 ### Setup Requirements
 
-dependencies: [{
-			"name": "puppetlabs-stdlib",
-			"version_requirement": ">= 4.3.2"
-		},{
-			"name": "puppetlabs-mysql",
-			"version_requirement": ">= 2.3.1"
-		},{
-			"name": "puppetlabs-java",
-			"version_requirement": ">= 1.1.2"
-		},{
-			"name": "puppetlabs-tomcat",
-			"version_requirement": ">= 1.0.1"
-		},{
-			"name": "puppetlabs-firewall",
-			"version_requirement": ">= 1.1.3"
-		}
-
 pluginsync needs to be enabled on Ubuntu 12.04 LTS
 
 
