@@ -97,7 +97,7 @@ Options you can use to configure:
 : kc-config.xml settings:
 > **kc_app_http_scheme** - Change application.http.scheme 		Default: http
 > 
-> **kc_application_host	** - Change application.host 				Default: IP address ($::ipaddress) 
+> **kc_application_host** - Change application.host 				Default: IP address ($::ipaddress) 
 > 
 > **kc_http_port** - Change http.port 						Default: 8080
 
