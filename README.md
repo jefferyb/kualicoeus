@@ -78,26 +78,40 @@ See below for more settings you can use...
 ## Reference
 
 Options you can use to configure:
+
 : KC_Install.sh settings:
 > **kc_install_mode**     	 - # BUNDLE EMBED 	  	Default: BUNDLE
+> 
 > **kc_install_dbtype**   	 - # ORACLE MySQL			    Default: MYSQL
+> 
 > **kc_install_version**	   - # NEW 3.1.1 5.0 5.0.1 5.1 5.1.1 5.2 	Default: NEW
+> 
 > **kc_install_un**       	   - Change KC Database Username
+> 
 > **kc_install_pw**       	   - Change KC Database Password
+> 
 > **kc_install_DBSvrNm**  - Change KC Schema Name
+> 
 > **kc_install_demo**         - # true | false Default: false - Run KC_Install_Demo.sh script to install demonstration data (Optional)
 
 : kc-config.xml settings:
 > **kc_app_http_scheme**		- Change application.http.scheme 		Default: http
+> 
 > **kc_application_host	**	- Change application.host 				Default: IP address ($::ipaddress) 
+> 
 > **kc_http_port**			- Change http.port 						Default: 8080
 
 : Kuali Coeus settings:
 > **kc_source_folder** - Location where you want your kc source extracted. | Default: /opt/kuali/source
+> 
 > **kc_config_home** - kc-config.xml's location | Default: /opt/kuali/main/dev
+> 
 > **kc_release_file** - kc release file name. e.g. kc-release-5_2_1.zip
+> 
 > **kc_download_link** - kc source url. e.g. http://downloads.kc.kuali.org/5.0/kc-release-5_2_1.zip
+> 
 > **kc_war_name** - war file's name to be deployed as. | Default: 'kc-ptd.war' using the vanilla .war file
+> 
 > **kc_war_ensure**	 - Default: 'present' - Set this to 'absent' or 'false' if you want to use your own war file and then use tomcat::war (https://github.com/puppetlabs/puppetlabs-tomcat#i-want-to-deploy-war-files) to deploy/manage you war file. e.g.   
 > ```
 class { 'kualicoeus': 
@@ -111,12 +125,16 @@ tomcat::war { 'sample.war':
 
 : MySQL settings:
 > **mysql_root_pw**			- Set MySQL root password
+> 
 > **connector_filename** - Connector file name to download, like mysql-connector-java-5.1.9.jar
+> 
 > **connector_url**  - Connector's url, like http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar
 
 : tomcat settings:
 > **catalina_base** - Change catalina_base location.
+> 
 > **tomcat_file_name** - tomcat source file name to download. e.g. apache-tomcat-6.0.41.tar.gz
+> 
 > **tomcat_source_url** - tomcat source url. e.g. http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.41/bin/apache-tomcat-6.0.41.tar.gz
 
 ## Limitations
