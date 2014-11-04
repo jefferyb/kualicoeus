@@ -95,11 +95,11 @@ Options you can use to configure:
 > **kc_install_demo**         - # true | false Default: false - Run KC_Install_Demo.sh script to install demonstration data (Optional)
 
 : kc-config.xml settings:
-> **kc_app_http_scheme**		- Change application.http.scheme 		Default: http
+> **kc_app_http_scheme** - Change application.http.scheme 		Default: http
 > 
-> **kc_application_host	**	- Change application.host 				Default: IP address ($::ipaddress) 
+> **kc_application_host	** - Change application.host 				Default: IP address ($::ipaddress) 
 > 
-> **kc_http_port**			- Change http.port 						Default: 8080
+> **kc_http_port** - Change http.port 						Default: 8080
 
 : Kuali Coeus settings:
 > **kc_source_folder** - Location where you want your kc source extracted. | Default: /opt/kuali/source
