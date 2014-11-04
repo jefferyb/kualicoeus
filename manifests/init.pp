@@ -2,79 +2,40 @@
 # Class to manage installation and configuration of Kuali Coeus.
 #
 
-class kualicoeus {
+class kualicoeus (
+  # MySQL settings
+  $mysql_root_pw       = $::kualicoeus::settings::mysql_root_pw,
+  $connector_filename  = $::kualicoeus::settings::connector_filename,
+  $connector_url       = $::kualicoeus::settings::connector_url,
+  # tomcat Settings
+  $catalina_base       = $::kualicoeus::settings::catalina_base,
+  $tomcat_file_name    = $::kualicoeus::settings::tomcat_file_name,
+  $tomcat_source_url   = $::kualicoeus::settings::tomcat_source_url,
+  # Kuali Coeus settings
+  $kc_source_folder    = $::kualicoeus::settings::kc_source_folder,
+  $kc_config_home      = $::kualicoeus::settings::kc_config_home,
+  $kc_release_file     = $::kualicoeus::settings::kc_release_file,
+  $kc_download_link    = $::kualicoeus::settings::kc_download_link,
+  $kc_war_name         = $::kualicoeus::settings::kc_war_name,
+  $kc_war_ensure       = $::kualicoeus::settings::kc_war_ensure,
+  # KC_Install.sh settings
+  $kc_install_mode     = $::kualicoeus::settings::kc_install_mode,
+  $kc_install_dbtype   = $::kualicoeus::settings::kc_install_dbtype,
+  $kc_install_version  = $::kualicoeus::settings::kc_install_version,
+  $kc_install_un       = $::kualicoeus::settings::kc_install_un,
+  $kc_install_pw       = $::kualicoeus::settings::kc_install_pw,
+  $kc_install_DBSvrNm  = $::kualicoeus::settings::kc_install_DBSvrNm,
+  $kc_install_demo     = $::kualicoeus::settings::kc_install_demo,
+  # kc-config.xml settings
+  $kc_app_http_scheme  = $::kualicoeus::settings::kc_app_http_scheme,
+  $kc_application_host = $::kualicoeus::settings::kc_application_host,
+  $kc_http_port        = $::kualicoeus::settings::kc_http_port,) inherits ::kualicoeus::settings {
+
   include kualicoeus::settings
-  require kualicoeus::configure_firewall
-  require kualicoeus::configure_mysql
   require java
-  require kualicoeus::configure_tomcat
-
-  Exec {
-    path => ['/sbin', '/bin', '/usr/sbin', '/usr/bin'] }
-
-  package { $kualicoeus::settings::install_pkgs: ensure => installed } ->
-  # Download & Extract the Kuali Coeus Release Files
-  exec {
-    'KC_Folders':
-      command => $kualicoeus::settings::kc_create_folders,
-      creates => $kualicoeus::settings::kc_config_home,
-      before  => Exec["Downloading_KC_${kualicoeus::settings::kc_version}"];
-
-    "Downloading_KC_${kualicoeus::settings::kc_version}":
-      cwd     => $kualicoeus::settings::kc_coeus_folder,
-      command => "wget ${kualicoeus::settings::kc_source}",
-      creates => "${kualicoeus::settings::kc_coeus_folder}/${kualicoeus::settings::kc_release_file}",
-      before  => Exec["Extracting_KC_${kualicoeus::settings::kc_version}"];
-
-    "Extracting_KC_${kualicoeus::settings::kc_version}":
-      cwd     => $kualicoeus::settings::kc_coeus_folder,
-      command => $kualicoeus::settings::kc_extract_release_file,
-      creates => "${kualicoeus::settings::kc_coeus_folder}/quickstart_guide.txt",
-      before  => Exec['Running_KC_Config_Script'];
-  } ->
-  # Get the KC Install Script & Setup the kc-config file
-  file {
-    "${kualicoeus::settings::kc_install_folder}/J_KC_Install.sh":
-      ensure => 'present',
-      source => 'puppet:///modules/kualicoeus/J_KC_Install.sh',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0777';
-
-    "${kualicoeus::settings::kc_install_folder}/LOGS/get_mysql_errors":
-      ensure => 'present',
-      source => 'puppet:///modules/kualicoeus/get_mysql_errors',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0777';
-
-    "${kualicoeus::settings::kc_config_home}/kc-config.xml":
-      ensure  => 'present',
-      content => template('kualicoeus/kc-config.xml.erb'),
-      mode    => '0664';
-  } ->
-  # Download the MySQL Connector, Run the KC Install Script & Deploy the Vanilla WAR File
-  exec {
-    'MySQL Connector':
-      cwd     => "${kualicoeus::settings::catalina_base}/lib",
-      command => "wget ${kualicoeus::settings::connector_url}",
-      creates => "${kualicoeus::settings::catalina_base}/lib/${kualicoeus::settings::connector_filename}",
-      before  => Exec['Running_KC_Config_Script'];
-
-    'Running_KC_Config_Script':
-      cwd     => $kualicoeus::settings::kc_install_folder,
-      command => "bash J_KC_Install.sh && touch ${kualicoeus::settings::kc_install_folder}/.KC_Config_Script_installed",
-      creates => "${kualicoeus::settings::kc_install_folder}/.KC_Config_Script_installed",
-      before  => Exec['Deploy Vanilla WAR File'],
-      require => File[
-        "${kualicoeus::settings::kc_install_folder}/J_KC_Install.sh",
-        "${kualicoeus::settings::kc_install_folder}/LOGS/get_mysql_errors"];
-
-    'Deploy Vanilla WAR File':
-      cwd     => "${kualicoeus::settings::kc_coeus_folder}/binary",
-      command => $kualicoeus::settings::kc_deploy_war_cmd,
-      creates => "${kualicoeus::settings::catalina_base}/webapps/kc-dev.war",
-      require => File["${kualicoeus::settings::kc_config_home}/kc-config.xml"];
-  }
-
+  require kualicoeus::packages
+  require kualicoeus::firewall
+  require kualicoeus::mysql
+  require kualicoeus::tomcat
+  require kualicoeus::kuali
 }

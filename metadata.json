@@ -1,6 +1,6 @@
 {
 	"name": "jefferyb-kualicoeus",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"author": "jefferyb",
 	"summary": "This module enables you to install Kuali Coeus",
 	"license": "Apache 2.0",
@@ -10,6 +10,9 @@
 	"dependencies": [{
 			"name": "puppetlabs-stdlib",
 			"version_requirement": ">= 4.3.2"
+		},{
+			"name": "nanliu-staging",
+			"version_requirement": ">= 1.0.0"
 		},{
 			"name": "puppetlabs-mysql",
 			"version_requirement": ">= 2.3.1"
