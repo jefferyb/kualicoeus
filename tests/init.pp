@@ -9,15 +9,13 @@
 # Learn more about module testing here:
 # http://docs.puppetlabs.com/guides/tests_smoke.html
 #
-class { "kualicoeus":
-  kc_install_un      => 'myusername',
-  kc_install_pw      => 'mypassword',
-  kc_install_DBSvrNm => 'mydatabase',
-  connector_url      => 'http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.8/mysql-connector-java-5.1.8.jar',
-  connector_filename => 'mysql-connector-java-5.1.8.jar',
-  catalina_base      => '/opt/apache-tomcat/tomcat6',
-  kc_source_folder   => '/opt/kuali/source/5.2.1',
-  kc_config_home     => '/opt/kuali/main/dev',
-  kc_war_name        => 'kc-dev.war',
+class { 'kualicoeus':
+  database_type    => 'ORACLE',
+  application_host => 'localhost',
+  http_port        => '8084',
+  catalina_base    => '/opt/apache-tomcat/tomcat6',
+  kc_source_folder => '/opt/kuali/source/5.2.1',
+  kc_config_home   => '/opt/kuali/main/dev',
+  kc_war_name      => 'kc-dev.war',
 }
 

@@ -1,0 +1,5 @@
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kc_notifications::kc_email_notifications') %>' WHERE NMSPC_CD='KC-GEN' AND PARM_NM='EMAIL_NOTIFICATIONS_ENABLED';
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kc_notifications::kc_email_notification_from_address') %>' WHERE NMSPC_CD='KC-GEN' AND PARM_NM='EMAIL_NOTIFICATION_FROM_ADDRESS';
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kc_notifications::kc_email_notification_test_enabled') %>' WHERE NMSPC_CD='KC-GEN' AND PARM_NM='EMAIL_NOTIFICATION_TEST_ENABLED';
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kc_notifications::kc_email_notification_test_address') %>' WHERE NMSPC_CD='KC-GEN' AND PARM_NM='EMAIL_NOTIFICATION_TEST_ADDRESS';
+quit

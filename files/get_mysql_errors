@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Script to test if there's any error in the sql logs
+# after running the install/upgrade script
+
 FileName=UPGRADE_ERRORS.`eval date +%Y%m%d"."%H.%M`
 
 for f in *.log;

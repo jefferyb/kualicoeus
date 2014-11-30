@@ -1,13 +1,68 @@
 <config>
-	<param name="application.http.scheme"><%= @kc_app_http_scheme %></param>
-	<param name="application.host"><%= @kc_application_host %></param>
-	<param name="http.port"><%= @kc_http_port %></param>
-	<param name="app.context.name">${app.code}-${environment}</param>
+        <!-- App specific parameters -->
+        <param name="application.http.scheme"><%= @application_http_scheme %></param>
+        <param name="application.host"><%= @application_host %></param>
+        <param name="http.port"><%= @http_port %></param>
+        <param name="environment"><%= @environment %></param>
+        <param name="app.context.name">${app.code}-${environment}</param>
+        <param name="build.version"><%= @build_version %></param>
 
+        <!-- To turn ON/OFF Production Mode-->
+        <param name="production.environment.code"><%= @production_environment_code %></param>
 
-	<!-- KC Client DB -->
-	<param name="datasource.url">jdbc:mysql://localhost:3306/<%= @kc_install_DBSvrNm %></param>
-	<param name="datasource.username"><%= @kc_install_un %></param>
-	<param name="datasource.password"><%= @kc_install_pw %></param>
-	<param name="datasource.ojb.platform">MySQL</param>
+        <!-- KC Client DB -->
+<% if @database_type == 'ORACLE' -%>
+        <param name="datasource.url"><%= @oracle_datasource_url %></param>
+        <param name="datasource.username"><%= @oracle_datasource_username %></param>
+        <param name="datasource.password"><%= @oracle_datasource_password %></param>
+        <param name="datasource.ojb.platform"><%= @oracle_datasource_ojb_platform %></param>
+
+        <!-- Added by JB for testing -->
+        <param name="datasource.driver.name"><%= @oracle_datasource_driver_name %></param>
+<% else -%>
+        <param name="datasource.url"><%= @mysql_datasource_url %></param>
+        <param name="datasource.username"><%= @mysql_datasource_username %></param>
+        <param name="datasource.password"><%= @mysql_datasource_password %></param>
+        <param name="datasource.ojb.platform"><%= @mysql_datasource_ojb_platform %></param>
+<% end -%>
+
+        <!-- Java mail properties -->
+        <param name="mail.smtp.host"><%= @mail_smtp_host %></param>
+        <param name="mail.smtp.port"><%= @mail_smtp_port %></param>
+        <param name="mail.smtp.username"><%= @mail_smtp_username %></param>
+        <param name="mail.user.password"><%= @mail_user_password %></param>
+        <param name="mail.smtp.auth"><%= @mail_smtp_auth %></param>
+        <param name="mail.from"><%= @mail_from %></param>
+        <param name="mail.relay.server"><%= @mail_relay_server %></param>
+
+        <!-- Configuration for Exception Incident handling and reporting -->
+        <param name="KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE"><%= @kualiexceptionhandleraction_exception_incident_report_service %></param>
+        <param name="MailMessage.from"><%= @mailmessage_from %></param>
+        <param name="KualiExceptionIncidentServiceImpl.additionalExceptionNameList"><%= @kualiexceptionincidentserviceimpl_additionalexceptionnamelist %></param>
+        <param name="KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST"><%= @kualiexceptionincidentserviceimpl_report_mail_list %></param>
+        <param name="kr.incident.mailing.list"><%= @kr_incident_mailing_list %></param>
+        <!-- End of Exception Incident handling and reporting -->
+
+        <!-- Kuali parameters -->
+        <param name="mailing.list.batch"><%= @mailing_list_batch %></param>
+        <param name="encryption.key"><%= @encryption_key %></param>
+
+<% if @activate_shibboleth == 'YES' -%>
+        <!-- To allow for pass-through Shibboleth authentication -->
+        <param name="filter.login.class"><%= @filter_login_class %></param>
+        <param name="filtermapping.login.1"><%= @filtermapping_login_1 %></param>
+<% end -%>
+
+<% if @activate_s2s == 'YES' -%>
+        <!-- S2S Configuration -->
+        <param name="grants.gov.s2s.host.production"><%= @grants_gov_s2s_host_production %></param>
+        <param name="grants.gov.s2s.host.development"><%= @grants_gov_s2s_host_development %></param>
+        <param name="grants.gov.s2s.host"><%= @grants_gov_s2s_host %></param>
+        <param name="grants.gov.s2s.port"><%= @grants_gov_s2s_port %></param>
+        <param name="s2s.keystore.password"><%= @s2s_keystore_password %></param>
+        <param name="s2s.keystore.location"><%= @s2s_keystore_location %></param>
+        <param name="s2s.truststore.location"><%= @s2s_truststore_location %></param>
+        <param name="s2s.truststore.password"><%= @s2s_truststore_password %></param>
+<% end -%>
+
 </config>

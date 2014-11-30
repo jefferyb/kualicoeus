@@ -1,0 +1,4 @@
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kew_notifications::kew_email_notifications') %>' WHERE NMSPC_CD='KR-WKFLW' AND PARM_NM='SEND_EMAIL_NOTIFICATION_IND';
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kew_notifications::kew_from_address') %>' WHERE NMSPC_CD='KR-WKFLW' AND PARM_NM='FROM_ADDRESS';
+UPDATE KRCR_PARM_T SET VAL='<%= scope.lookupvar('::kualicoeus::config::kew_notifications::kew_email_notification_test_address') %>' WHERE NMSPC_CD='KR-WKFLW' AND PARM_NM='EMAIL_NOTIFICATION_TEST_ADDRESS';
+quit

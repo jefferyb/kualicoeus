@@ -1,5 +1,9 @@
 #!/bin/sh
 
+<% if @database_type == 'ORACLE' -%>
+export TNS_ADMIN=<%= @tnsnames_location %>
+<% end -%>
+
 if [ ! -d LOGS ]
 then
 	mkdir LOGS
@@ -42,7 +46,8 @@ mode=<%= @kc_install_mode %>
 
 if [ "${mode}" = "EMBED" ]
 then
-	InstRice=`getChoice 'Install/Upgrade Embedded Rice Server Side (KC-related Rice data will still be loaded, regardless of response)' Y N`
+	InstRice=<%= @kc_install_instrice %>
+# 	InstRice=`getChoice 'Install/Upgrade Embedded Rice Server Side (KC-related Rice data will still be loaded, regardless of response)' Y N`
 	if [ "${InstRice}" = 'N' ]
 	then
 		echo 'WARNING: By choosing this option, it is expected that your standalone Rice is already upgraded to a current version.  If it is not, please stop this installation until that is completed.'
@@ -52,20 +57,29 @@ else
 fi
 
 # dbtype=`getChoice 'Enter Database Type' ORACLE MYSQL`
-dbtype=<%= @kc_install_dbtype %>
+dbtype=<%= @database_type %>
 
 # version=`getChoice 'Enter Currently Installed Version' NEW 3.1.1 5.0 5.0.1 5.1 5.1.1 5.2`
 version=<%= @kc_install_version %>
 
 # un=`getAnswer 'Enter KC Database Username'`
-un=<%= @kc_install_un %>
+<% if @database_type == 'ORACLE' -%>
+un=<%= @oracle_kc_install_un %>
+<% else -%>
+un=<%= @mysql_kc_install_un %>
+<% end -%>
 
 # pw=`getAnswer 'Enter KC Database Password'`
-pw=<%= @kc_install_pw %>
+<% if @database_type == 'ORACLE' -%>
+pw=<%= @oracle_kc_install_pw %>
+<% else -%>
+pw=<%= @mysql_kc_install_pw %>
+<% end -%>
 
 if [ "${dbtype}" = "ORACLE" ]
 then
-	DBSvrNm=`getAnswer 'Enter KC Database TNS Name'`
+	DBSvrNm=<%= @oracle_kc_install_dbsvrnm %>
+# 	DBSvrNm=`getAnswer 'Enter KC Database TNS Name'`
 	if [ "${DBSvrNm}" = "_" ]
 	then
 		DBSvrNm=''
@@ -73,18 +87,20 @@ then
 		DBSvrNm="@${DBSvrNm}"
 	fi
 else
-	DBSvrNm=<%= @kc_install_DBSvrNm %>
+	DBSvrNm=<%= @mysql_kc_install_dbsvrnm %>
 #	DBSvrNm=`getAnswer 'Enter KC Schema Name'`
-#	if [ "${DBSvrNm}" = "_" ]
-#	then
-#		DBSvrNm="${un}"
-#	fi
+	if [ "${DBSvrNm}" = "_" ]
+	then
+		DBSvrNm="${un}"
+	fi
 fi
 
 if [ "${mode}" = "EMBED" ]
 then
-	Riceun=`getAnswer 'Enter Rice Database Username'`
-	Ricepw=`getAnswer 'Enter Rice Database Password'`
+	Riceun=<%= @kc_install_riceun %>
+	Ricepw=<%= @kc_install_ricepw %>
+# 	Riceun=`getAnswer 'Enter Rice Database Username'`
+# 	Ricepw=`getAnswer 'Enter Rice Database Password'`
 	if [ "${dbtype}" = "ORACLE" ]
 	then
 		RiceDBSvrNm=`getAnswer 'Enter Rice Database TNS Name'`
@@ -95,11 +111,12 @@ then
 			RiceDBSvrNm="@${RiceDBSvrNm}"
 		fi
 	else
-		RiceDBSvrNm=`getAnswer 'Enter Rice Schema Name'`
-		if [ "${RiceDBSvrNm}" = "_" ]
-		then
-			RiceDBSvrNm="${Riceun}"
-		fi
+		RiceDBSvrNm=<%= @kc_install_ricedbsvrnm %>
+# 		RiceDBSvrNm=`getAnswer 'Enter Rice Schema Name'`
+# 		if [ "${RiceDBSvrNm}" = "_" ]
+# 		then
+# 			RiceDBSvrNm="${Riceun}"
+# 		fi
 	fi
 else
 	Riceun="${un}"

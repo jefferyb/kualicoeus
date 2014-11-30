@@ -1,0 +1,6 @@
+pkg/
+Gemfile.lock
+spec/fixtures/
+.vagrant/
+.bundle/
+coverage/

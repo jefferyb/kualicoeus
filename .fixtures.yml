@@ -1,0 +1,13 @@
+fixtures:
+  forge_modules:
+    firewall: "puppetlabs/firewall"
+    staging: "nanliu/staging"
+    stdlib: "puppetlabs/stdlib"
+    mysql: "puppetlabs/mysql"
+    java: "puppetlabs/java"
+    tomcat: "puppetlabs/tomcat"
+    docker: "garethr/docker"
+    epel: "stahnma/epel"
+    apt: "puppetlabs/apt"
+  symlinks:
+    kualicoeus: "#{source_dir}"

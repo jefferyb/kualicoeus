@@ -5,20 +5,7 @@
 # visit https://forge.puppetlabs.com/puppetlabs/firewall
 #
 class kualicoeus::firewall {
-  # Since puppetlabs/firewall is not turning off/managing Centos 7:
-  case $::operatingsystem {
-    /^(RedHat|CentOS)$/ : {
-      if $::kualicoeus::settings::osver[0] >= '7' {
-        service { 'firewalld':
-          ensure => stopped,
-          enable => false,
-        }
-      } else {
-        class { '::firewall': ensure => stopped, }
-      }
-    }
-    default             : {
-      class { '::firewall': ensure => stopped, }
-    }
+  if $::kualicoeus::deactivate_firewall == true {
+    class { '::firewall': ensure => stopped, }
   }
 }
