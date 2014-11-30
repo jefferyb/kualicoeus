@@ -126,40 +126,54 @@ See below for more settings you can use...
 Options you can use to configure:
 
 ####kualicoeus
+
 #####`deactivate_firewall`
 - By default, the module turns off the firewall for easy testing. 
 - Options: **'true'**, 'false'
+
 #####`setup_tomcat`
 - Choose if you want to install tomcat or not. Like in case you have your own installed and configured
 - Options: **'true'**, 'false'
+
 #####`setup_database`
 - Choose if you want this module to setup a database or not. You can use `false` in case you have your own setup and configured
 - Options: **'true'**, 'false'
+
 #####`database_type` 
 - Choose what Database Type you want to use 
 - Options: **'MYSQL'**, 'ORACLE'
 
 #### **MySQL settings related:**
+
 #####`mysql_root_pw`
 - Set MySQL root password
+
 #####`db_hostname`
 - Set your database hostname
+
 #####`mysql_connector_filename` | `oracle_connector_filename`
 - Connector file name to download, like mysql-connector-java-5.1.9.jar
+
 #####`mysql_connector_url` | `oracle_connector_url`
 - Connector's url, like http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar
 
 #### **KC_Install.sh settings related:**
+
 #####`kc_install_mode` 
 - Options: 'BUNDLE', 'EMBED'  | Default: 'BUNDLE'
+
 #####`kc_install_version` 
 - Options: NEW 3.1.1 5.0 5.0.1 5.1 5.1.1 5.2  Default: NEW
+
 #####`mysql_kc_install_un` | `oracle_kc_install_un`
 - Change KC Database Username
+
 #####`mysql_kc_install_pw` | `oracle_kc_install_pw`
 - Change KC Database Password
+
 #####`mysql_kc_install_dbsvrnm` | `oracle_kc_install_dbsvrnm`
 - Change KC Schema Name
+
 #####`kc_install_demo`
 - Run KC_Install_Demo.sh script to install demonstration data (Optional) | Options: 'true', 'false' | Default: false
 
@@ -167,103 +181,148 @@ Options you can use to configure:
 -  tnsnames.ora file location
 
 #### **kc-config.xml settings related:**
+
 #####`kc_config_home`
 - kc-config.xml's location | Default: /opt/kuali/main/dev
+
 #####`application_http_scheme`
 - Change application.http.scheme | Default: http
+
 #####`application_host`
 - Change application.host | Default: $::fqdn 
+
 #####`http_port`
 - Change http.port | Default: 8080
+
 #####`environment`
 - Change environment | Default: dev
+
 #####`build_version`
 - Change build.version | Default: 5.2.1
+
 #####`production_environment_code`
 - Change production.environment.code | Default: xyz
 
 #####`oracle_datasource_port`
 - Mainly used in the tnsnames.ora file for now...
+
 #####`mysql_datasource_url` | `oracle_datasource_url`
 - Change datasource.url 
+
 #####`mysql_datasource_username` | `oracle_datasource_username`
 - Change datasource.username 
+
 #####`mysql_datasource_password` | `oracle_datasource_password`
 - Change datasource.password
+
 #####`mysql_datasource_ojb_platform` | `oracle_datasource_ojb_platform`
 - Change datasource.ojb.platform
+
 #####`oracle_datasource_driver_name`
 - Change datasource.driver.name
+
 #####`mail_smtp_host`
 - Change mail.smtp.host
+
 #####`mail_smtp_port`
 - Change mail.smtp.port
+
 #####`mail_smtp_username`
 - Change mail.smtp.username
+
 #####`mail_user_password`
 - Change mail.user.password
+
 #####`mail_smtp_auth`
 - Change mail.smtp.auth
+
 #####`mail_from`
 - Change mail.from
+
 #####`mail_relay_server`
 - Change mail.relay.server
+
 #####`kualiexceptionhandleraction_exception_incident_report_service`
 - Change KualiExceptionHandlerAction.EXCEPTION_INCIDENT_REPORT_SERVICE
+
 #####`mailmessage_from`
 - Change MailMessage.from
+
 #####`kualiexceptionincidentserviceimpl_additionalexceptionnamelist`
 - Change KualiExceptionIncidentServiceImpl.additionalExceptionNameList
+
 #####`kualiexceptionincidentserviceimpl_report_mail_list`
 - Change KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST
+
 #####`kr_incident_mailing_list`
 - Change kr.incident.mailing.list
+
 #####`mailing_list_batch`
 - Change mailing.list.batch
+
 #####`encryption_key`
 - Change encryption.key
+
 #####`filter_login_class`
 - Change filter.login.class
+
 #####`filtermapping_login_1`
 - Change filtermapping.login.1
+
 #####`grants_gov_s2s_host_production`
 - Change grants.gov.s2s.host.production
+
 #####`grants_gov_s2s_host_development`
 - Change grants.gov.s2s.host.development
+
 #####`grants_gov_s2s_host`
 - Change grants.gov.s2s.host
+
 #####`grants_gov_s2s_port`
 - Change grants.gov.s2s.port
+
 #####`s2s_keystore_password`
 - Change s2s.keystore.password
+
 #####`s2s_keystore_location`
 - Change s2s.keystore.location
+
 #####`s2s_truststore_location`
 - Change s2s.truststore.location
+
 #####`s2s_truststore_password`
 - Change s2s.truststore.password
 
 
 #### **Kuali Coeus settings related:**
+
 #####`kc_release_file`
 - kc release file name. e.g. kc-release-5_2_1.zip
+
 #####`kc_download_link`
 - kc source url. e.g. http://downloads.kc.kuali.org/5.0/kc-release-5_2_1.zip
+
 #####`kc_source_folder`
 - Location where you want your kc source extracted. | Default: /opt/kuali/source
+
 #####`kc_war_name`
 - WAR file's name to be deployed as.
+
 #####`kc_war_source`
 - The kc_war_source can be a local file, puppet:/// file, http, or ftp
+
 #####`kc_war_ensure`
 - Default: 'present' - Set this to 'absent' or 'false' if you want to delete the war file & folder or not deploy the war file...  
 
 
 #### **tomcat settings related:**
+
 #####`catalina_base`
 - Change catalina_base location.
+
 #####`tomcat_file_name`
 - tomcat source file name to download. e.g. apache-tomcat-6.0.41.tar.gz
+
 #####`tomcat_source_url`
 - tomcat source url. e.g. http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.41/bin/apache-tomcat-6.0.41.tar.gz
 
