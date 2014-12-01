@@ -18,13 +18,7 @@ class kualicoeus::tomcat {
     file { "${::kualicoeus::catalina_base}/bin/setenv.sh":
       ensure  => 'present',
       content => template('kualicoeus/setenv.sh.erb'),
-    } ~>
-    tomcat::service { 'default':
-      use_jsvc      => false,
-      use_init      => false,
-      start_command => "${::kualicoeus::catalina_base}/bin/startup.sh",
-      stop_command  => "${::kualicoeus::catalina_base}/bin/shutdown.sh -force",
-      catalina_base => $::kualicoeus::catalina_base,
-    }
+    } ->
+    class { 'kualicoeus::config::connector': }
   }
 }

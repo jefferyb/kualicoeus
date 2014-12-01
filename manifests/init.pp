@@ -125,11 +125,9 @@ class kualicoeus (
 
   class { 'kualicoeus::config::run_kc_demo_script': }
 
-  class { 'kualicoeus::tomcat': }
-
-  class { 'kualicoeus::config::connector': }
-
   class { 'kualicoeus::kuali': }
+
+  class { 'kualicoeus::tomcat': }
 
   class { 'kualicoeus::config::war_file': }
 
@@ -137,9 +135,8 @@ class kualicoeus (
   Class['kualicoeus::firewall'] ->
   Class['kualicoeus::config::database'] ->
   Class['kualicoeus::config::run_kc_demo_script'] ->
-  Class['kualicoeus::tomcat'] ->
-  Class['kualicoeus::config::connector'] ->
   Class['kualicoeus::kuali'] ->
+  Class['kualicoeus::tomcat'] ->
   Class['kualicoeus::config::war_file']
 
 }

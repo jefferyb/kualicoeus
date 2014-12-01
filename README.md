@@ -18,6 +18,7 @@ v. 0.1.3:
   * E-mail notifications - KC & KEW
   * Oracle Database option using Oracle XE 11g using Docker (for testing) 
   * Already have the database setup? Install without setting up the database
+  * Check CHANGELOG.md for more...
 
 ## Overview
 

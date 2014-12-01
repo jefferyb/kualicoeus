@@ -24,10 +24,32 @@ describe 'kualicoeus', :type => 'class' do
 
   end
 
-  context 'On a Ubuntu OS with defaults for all parameters' do
+  context 'On a Ubuntu 12.04 OS with defaults for all parameters' do
     let :facts do
       {
-        :osfamily => 'Debian', :operatingsystem => 'Ubuntu', :lsbdistcodename => 'trusty', :kernel => 'Linux'
+        :osfamily => 'Debian', :operatingsystem => 'Ubuntu', :lsbmajdistrelease => '12', :lsbdistcodename => 'precise', :kernel => 'Linux'
+      }
+    end
+
+    it { should contain_class('kualicoeus') }
+
+  end
+
+  context 'On a Ubuntu 13.04 OS with defaults for all parameters' do
+    let :facts do
+      {
+        :osfamily => 'Debian', :operatingsystem => 'Ubuntu', :lsbmajdistrelease => '13', :lsbdistcodename => 'raring', :kernel => 'Linux'
+      }
+    end
+
+    it { should contain_class('kualicoeus') }
+
+  end
+
+  context 'On a Ubuntu 14.04 OS with defaults for all parameters' do
+    let :facts do
+      {
+        :osfamily => 'Debian', :operatingsystem => 'Ubuntu', :lsbmajdistrelease => '14', :lsbdistcodename => 'trusty', :kernel => 'Linux'
       }
     end
 
@@ -38,7 +60,7 @@ describe 'kualicoeus', :type => 'class' do
   context 'On a Debian OS with defaults for all parameters' do
     let :facts do
       {
-        :osfamily => 'Debian', :operatingsystem => 'Debian', :lsbdistcodename => 'trusty', :kernel => 'Linux'
+        :osfamily => 'Debian', :operatingsystem => 'Debian', :lsbmajdistrelease => '7', :lsbdistcodename => 'wheezy', :kernel => 'Linux'
       }
     end
 
