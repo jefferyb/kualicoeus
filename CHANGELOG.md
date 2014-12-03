@@ -1,3 +1,7 @@
+##2014-12-02 - Supported Release 0.1.4
+
+This was just a bug fix, where whenever you set `setup_tomcat => false`, it would complain.
+
 ##2014-11-30 - Supported Release 0.1.3
 
 This release adds e-mail notifications, KC & KEW, option to use Oracle Database for testing (using docker) and added more settings to the kc-config.xml file. 

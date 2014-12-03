@@ -14,6 +14,9 @@
 6. [Development](#development)
 
 ## What's NEW!!!
+v. 0.1.4:
+  * This was just a bug fix, where whenever you set `setup_tomcat => false`, it would complain.
+
 v. 0.1.3:
   * E-mail notifications - KC & KEW
   * Oracle Database option using Oracle XE 11g using Docker (for testing) 
