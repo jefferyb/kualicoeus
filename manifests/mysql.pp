@@ -1,8 +1,17 @@
+# == Class: kualicoeus::mysql
 #
 # Using puppetlabs/mysql module to install & configure MySQL server
 #
 # For more information on the puppetlabs/mysql module, please visit
 # https://forge.puppetlabs.com/puppetlabs/mysql
+#
+# === Authors
+#
+# Jeffery Bagirimvano <jeffery.rukundo@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2014 Jeffery B.
 #
 
 class kualicoeus::mysql {
@@ -54,14 +63,14 @@ class kualicoeus::mysql {
 
   # Configure MySQL
   mysql::db { $::kualicoeus::mysql_kc_install_dbsvrnm:
-    user     => $::kualicoeus::mysql_kc_install_un,
-    password => $::kualicoeus::mysql_kc_install_pw,
+    user     => $::kualicoeus::_datasource_username,
+    password => $::kualicoeus::_datasource_password,
     host     => $::kualicoeus::db_hostname,
     charset  => 'utf8',
     collate  => 'utf8_bin',
   }
 
-  mysql_grant { "${::kualicoeus::mysql_kc_install_un}@${::kualicoeus::db_hostname}/*.*":
+  mysql_grant { "${::kualicoeus::_datasource_username}@${::kualicoeus::db_hostname}/*.*":
     ensure     => 'present',
     options    => ['GRANT'],
     privileges => [
@@ -78,7 +87,7 @@ class kualicoeus::mysql {
       'CREATE VIEW',
       'CREATE ROUTINE'],
     table      => '*.*',
-    user       => "${::kualicoeus::mysql_kc_install_un}@${::kualicoeus::db_hostname}",
+    user       => "${::kualicoeus::_datasource_username}@${::kualicoeus::db_hostname}",
   }
 
   if $kualicoeus::kc_install_mode == 'EMBED' {

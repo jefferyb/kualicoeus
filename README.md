@@ -155,11 +155,11 @@ Options you can use to configure:
 #####`db_hostname`
 - Set your database hostname
 
-#####`mysql_connector_filename` | `oracle_connector_filename`
-- Connector file name to download, like mysql-connector-java-5.1.9.jar
+#####`db_driver_name`
+- Database file name, like mysql-connector-java-5.1.9.jar
 
-#####`mysql_connector_url` | `oracle_connector_url`
-- Connector's url, like http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar
+#####`db_driver_url`
+- Database location, like http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar
 
 #### **KC_Install.sh settings related:**
 
@@ -169,10 +169,10 @@ Options you can use to configure:
 #####`kc_install_version` 
 - Options: NEW 3.1.1 5.0 5.0.1 5.1 5.1.1 5.2  Default: NEW
 
-#####`mysql_kc_install_un` | `oracle_kc_install_un`
+#####`datasource_username`
 - Change KC Database Username
 
-#####`mysql_kc_install_pw` | `oracle_kc_install_pw`
+#####`datasource_password`
 - Change KC Database Password
 
 #####`mysql_kc_install_dbsvrnm` | `oracle_kc_install_dbsvrnm`
@@ -198,7 +198,7 @@ Options you can use to configure:
 #####`http_port`
 - Change http.port | Default: 8080
 
-#####`environment`
+#####`kc_environment`
 - Change environment | Default: dev
 
 #####`build_version`
@@ -222,7 +222,7 @@ Options you can use to configure:
 #####`mysql_datasource_ojb_platform` | `oracle_datasource_ojb_platform`
 - Change datasource.ojb.platform
 
-#####`oracle_datasource_driver_name`
+#####`db_driver_class_name`
 - Change datasource.driver.name
 
 #####`mail_smtp_host`

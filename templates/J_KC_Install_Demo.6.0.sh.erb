@@ -1,3 +1,21 @@
+########################################
+# Kuali Coeus, a comprehensive research administration system for higher education.
+# 
+# Copyright 2005-2015 Kuali, Inc.
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+########################################
 #!/bin/sh
 
 <% if @database_type == 'ORACLE' -%>
@@ -48,51 +66,36 @@ mode=<%= @kc_install_mode %>
 dbtype=<%= @database_type %>
 
 # un=`getAnswer 'Enter KC Database Username'`
-<% if @database_type == 'ORACLE' -%>
-un=<%= @oracle_kc_install_un %>
-<% else -%>
-un=<%= @mysql_kc_install_un %>
-<% end -%>
+un=<%= @_datasource_username %>
 
 # pw=`getAnswer 'Enter KC Database Password'`
-<% if @database_type == 'ORACLE' -%>
-pw=<%= @oracle_kc_install_pw %>
-<% else -%>
-pw=<%= @mysql_kc_install_pw %>
-<% end -%>
+pw=<%= @_datasource_password %>
 
-# KC Schema/Database TNS Name
-<% if @database_type == 'ORACLE' -%>
-DBSvrNm=<%= @oracle_kc_install_dbsvrnm %>
-<% else -%>
-DBSvrNm=<%= @mysql_kc_install_dbsvrnm %>
-<% end -%>
-
-
-# if [ "${dbtype}" = "ORACLE" ]
-# then
-# 	DBSvrNm=`getAnswer 'Enter KC Database TNS Name'`
-# 	if [ "${DBSvrNm}" = "_" ]
-# 	then
-# 		DBSvrNm=''
-# 	else
-# 		DBSvrNm="@${DBSvrNm}"
-# 	fi
-# else
-#         DBSvrNm=<%= @kc_install_DBSvrNm %>
-# 	# DBSvrNm=`getAnswer 'Enter KC Schema Name'`
-# 	# if [ "${DBSvrNm}" = "_" ]
-# 	# then
-# 	# 	DBSvrNm="${un}"
-# 	# fi
-# fi
+if [ "${dbtype}" = "ORACLE" ]
+then
+	# DBSvrNm=`getAnswer 'Enter KC Database TNS Name'`
+        DBSvrNm=<%= @oracle_kc_install_dbsvrnm %>
+	if [ "${DBSvrNm}" = "_" ]
+	then
+		DBSvrNm=''
+	else
+		DBSvrNm="@${DBSvrNm}"
+	fi
+else
+	# DBSvrNm=`getAnswer 'Enter KC Schema Name'`
+        DBSvrNm=<%= @mysql_kc_install_dbsvrnm %>
+	if [ "${DBSvrNm}" = "_" ]
+	then
+		DBSvrNm="${un}"
+	fi
+fi
 
 if [ "${mode}" = "EMBED" ]
 then
-	Riceun=<%= @kc_install_riceun %>
-	Ricepw=<%= @kc_install_ricepw %>
-# 	Riceun=`getAnswer 'Enter Rice Database Username'`
-# 	Ricepw=`getAnswer 'Enter Rice Database Password'`
+	# Riceun=`getAnswer 'Enter Rice Database Username'`
+	# Ricepw=`getAnswer 'Enter Rice Database Password'`
+        Riceun=<%= @kc_install_riceun %>
+        Ricepw=<%= @kc_install_ricepw %>
 	if [ "${dbtype}" = "ORACLE" ]
 	then
 		RiceDBSvrNm=`getAnswer 'Enter Rice Database TNS Name'`
@@ -103,12 +106,12 @@ then
 			RiceDBSvrNm="@${RiceDBSvrNm}"
 		fi
 	else
-		RiceDBSvrNm=<%= @kc_install_ricedbsvrnm %>
-# 		RiceDBSvrNm=`getAnswer 'Enter Rice Schema Name'`
-# 		if [ "${RiceDBSvrNm}" = "_" ]
-# 		then
-# 			RiceDBSvrNm="${Riceun}"
-# 		fi
+		# RiceDBSvrNm=`getAnswer 'Enter Rice Schema Name'`
+                RiceDBSvrNm=<%= @kc_install_ricedbsvrnm %>
+		# if [ "${RiceDBSvrNm}" = "_" ]
+		# then
+		# 	RiceDBSvrNm="${Riceun}"
+		# fi
 	fi
 else
 	Riceun="${un}"
@@ -175,6 +178,12 @@ case "${dbtype}" in
         
         cd KC-RELEASE-5_2_0-SCRIPT
         sqlplus "${Riceun}"/"${Ricepw}${RiceDBSvrNm}" < KR-RELEASE-5_2_0-Demo-ORACLE.sql
+        
+        mv *.log ../LOGS/
+        cd ..
+        
+        cd KC-RELEASE-6_0_0-SCRIPT
+        sqlplus "${un}"/"${pw}${DBSvrNm}" < KC-RELEASE-6_0_0-Demo-ORACLE.sql
         
         mv *.log ../LOGS/
         cd ..
@@ -246,7 +255,13 @@ case "${dbtype}" in
 
         mv *.log ../LOGS/
         cd ..
-               
+
+        cd KC-RELEASE-6_0_0-SCRIPT
+        mysql -u ${un} -p${pw} -D ${DBSvrNm} -s -f < KC-RELEASE-6_0_0-Demo-MYSQL.sql > KC-RELEASE-6_0_0-Demo-MYSQL-Install.log 2>&1
+
+        mv *.log ../LOGS/
+        cd ..
+                       
         cd KC-RELEASE-99_9_9-SCRIPT
         mysql -u ${Riceun} -p${Ricepw} -D ${RiceDBSvrNm} -s -f < KR-RELEASE-99_9_9-Demo-MYSQL.sql > KR-RELEASE-99_9_9-Demo-MYSQL-Install.log 2>&1
 

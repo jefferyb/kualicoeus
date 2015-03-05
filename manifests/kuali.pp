@@ -1,5 +1,14 @@
+# == Class: kualicoeus::kuali
 #
 # Class to manage Kuali installs
+#
+# === Authors
+#
+# Jeffery Bagirimvano <jeffery.rukundo@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2014 Jeffery B.
 #
 
 class kualicoeus::kuali {

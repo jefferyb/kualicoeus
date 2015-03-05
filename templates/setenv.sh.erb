@@ -1,4 +1,8 @@
-CLASSPATH=$CLASSPATH:<%= @catalina_base %>/lib/*
-CATALINA_HOME=<%= @catalina_base %>
-CATALINA_PID=<%= @catalina_base %>/conf/catalina.pid
+CLASSPATH=$CLASSPATH:<%= @_catalina_base %>/lib/*
+CATALINA_HOME=<%= @_catalina_base %>
+CATALINA_PID=<%= @_catalina_base %>/conf/catalina.pid
+<% if @setup_p6spy -%>
+JAVA_OPTS="-Dspy.properties=<%= @_catalina_base %>/conf/spy.properties -Djava.awt.headless=true -ea -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Dalt.config.location=<%= @kc_config_home %>/kc-config.xml"
+<% else -%>
 JAVA_OPTS="-Djava.awt.headless=true -ea -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Dalt.config.location=<%= @kc_config_home %>/kc-config.xml"
+<% end -%>

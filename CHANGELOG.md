@@ -14,5 +14,5 @@ This release adds e-mail notifications, KC & KEW, option to use Oracle Database 
 - Added `deactivate_firewall` to deactivate the firewall or leave how things are | Default: 'true'
 
 ###Working on | NOT DONE
-- `activate_s2s` to turn on S2S. Not tested
-- `activate_shibboleth` to turn on Shibboleth
+- `setup_s2s` to turn on S2S. Not tested
+- `setup_shibboleth` to turn on Shibboleth

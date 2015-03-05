@@ -1,5 +1,14 @@
+# == Class: kualicoeus::config::folders
 #
 # Class to manage folders used by the kualicoeus module
+#
+# === Authors
+#
+# Jeffery Bagirimvano <jeffery.rukundo@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2014 Jeffery B.
 #
 
 class kualicoeus::config::folders {

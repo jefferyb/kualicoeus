@@ -3,28 +3,25 @@
         <param name="application.http.scheme"><%= @application_http_scheme %></param>
         <param name="application.host"><%= @application_host %></param>
         <param name="http.port"><%= @http_port %></param>
-        <param name="environment"><%= @environment %></param>
+        <param name="environment"><%= @kc_environment %></param>
         <param name="app.context.name">${app.code}-${environment}</param>
-        <param name="build.version"><%= @build_version %></param>
+<% if @kc_upgrade_version -%>
+        <param name="build.version"><%= @kc_upgrade_version %></param>
+<% else -%>
+        <param name="build.version"><%= @_build_version %></param>
+<% end -%>
 
         <!-- To turn ON/OFF Production Mode-->
         <param name="production.environment.code"><%= @production_environment_code %></param>
 
         <!-- KC Client DB -->
-<% if @database_type == 'ORACLE' -%>
-        <param name="datasource.url"><%= @oracle_datasource_url %></param>
-        <param name="datasource.username"><%= @oracle_datasource_username %></param>
-        <param name="datasource.password"><%= @oracle_datasource_password %></param>
-        <param name="datasource.ojb.platform"><%= @oracle_datasource_ojb_platform %></param>
+        <param name="datasource.url"><%= @_datasource_url %></param>
+        <param name="datasource.username"><%= @_datasource_username %></param>
+        <param name="datasource.password"><%= @_datasource_password %></param>
+        <param name="datasource.ojb.platform"><%= @_datasource_ojb_platform %></param>
 
         <!-- Added by JB for testing -->
-        <param name="datasource.driver.name"><%= @oracle_datasource_driver_name %></param>
-<% else -%>
-        <param name="datasource.url"><%= @mysql_datasource_url %></param>
-        <param name="datasource.username"><%= @mysql_datasource_username %></param>
-        <param name="datasource.password"><%= @mysql_datasource_password %></param>
-        <param name="datasource.ojb.platform"><%= @mysql_datasource_ojb_platform %></param>
-<% end -%>
+        <param name="datasource.driver.name"><%= @_db_driver_class_name %></param>
 
         <!-- Java mail properties -->
         <param name="mail.smtp.host"><%= @mail_smtp_host %></param>
@@ -47,13 +44,13 @@
         <param name="mailing.list.batch"><%= @mailing_list_batch %></param>
         <param name="encryption.key"><%= @encryption_key %></param>
 
-<% if @activate_shibboleth == 'YES' -%>
+<% if @setup_shibboleth -%>
         <!-- To allow for pass-through Shibboleth authentication -->
         <param name="filter.login.class"><%= @filter_login_class %></param>
         <param name="filtermapping.login.1"><%= @filtermapping_login_1 %></param>
 <% end -%>
 
-<% if @activate_s2s == 'YES' -%>
+<% if @setup_s2s -%>
         <!-- S2S Configuration -->
         <param name="grants.gov.s2s.host.production"><%= @grants_gov_s2s_host_production %></param>
         <param name="grants.gov.s2s.host.development"><%= @grants_gov_s2s_host_development %></param>

@@ -10,6 +10,12 @@ do
 	echo >> $FileName
 	echo "Processing $f file.."
 	echo [ $f ] >> $FileName
+<% if @database_type == 'MYSQL' -%>
 	cat $f | grep -B5 -A3 ERROR >> $FileName
+<% end -%>
+<% if @database_type == 'ORACLE' -%>
+	cat $f | grep -B5 -A3 ORA- >> $FileName
+<% end -%>
 done
+cp $FileName CURRENT_UPGRADE_ERRORS
 

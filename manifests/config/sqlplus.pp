@@ -1,5 +1,14 @@
+# == Class: kualicoeus::config::sqlplus
 #
 # Class to manage sqlplus used by the kualicoeus module
+#
+# === Authors
+#
+# Jeffery Bagirimvano <jeffery.rukundo@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2014 Jeffery B.
 #
 
 class kualicoeus::config::sqlplus (
@@ -15,6 +24,7 @@ class kualicoeus::config::sqlplus (
   $oracle_hostname     = $kualicoeus::db_hostname,
   $oracle_port         = $kualicoeus::oracle_datasource_port,
   $tnsnames_location   = $kualicoeus::tnsnames_location,) {
+
   if $oracle_service_name == undef {
     fail("Please set 'oracle_service_name' in your class { 'kualicoeus::config::sqlplus': }")
   }
