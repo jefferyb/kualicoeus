@@ -4,9 +4,9 @@
 #
 # ####**kew_notifications settings:**
 #
-# #####[*database_type*]
+# #####[*kew_database_type*]
 #   - Set this to either 'MYSQL' or 'ORACLE'.
-#     - Default: database_type => 'MYSQL',
+#     - Default: kew_database_type => undef,
 #
 # #####[*kew_email_notifications*]
 #   - Enables email notifications to be sent
@@ -23,7 +23,7 @@
 # === Examples
 #
 #  class { 'kualicoeus::config::kew_notifications':
-#    database_type                       => 'ORACLE',
+#    kew_database_type                   => 'ORACLE',
 #    kew_email_notifications             => 'Y',
 #    kew_from_address                    => 'kew-email-notif@example.com',
 #    kew_email_notification_test_address => 'admin@example.com',
@@ -40,10 +40,11 @@
 
 class kualicoeus::config::kew_notifications (
   # KR-WKFLW | KEW related email parameters
+  $kew_database_type, # Set this to either 'MYSQL' or 'ORACLE'
   $kew_email_notifications,
   $kew_from_address, # Default from email address for notifications
   $kew_email_notification_test_address, # Default email address used for testing
-  $kew_database_type = $kualicoeus::database_type,) {
+  ) {
     
   if $kew_database_type == 'ORACLE' {
     $set_kew_paramaters_script = "sqlplus ${::kualicoeus::_datasource_username}/${::kualicoeus::_datasource_password}@${::kualicoeus::oracle_kc_install_dbsvrnm} < ${kualicoeus::kc_config_home}/config/kew_email_notifications.sql"

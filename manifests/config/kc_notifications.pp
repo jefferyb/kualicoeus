@@ -4,9 +4,9 @@
 #
 # ####**kc_notifications settings:**
 #
-# #####[*database_type*]
+# #####[*kc_database_type*]
 #   - Set this to either 'MYSQL' or 'ORACLE'.
-#     - Default: database_type => 'MYSQL',
+#     - Default: kc_database_type => undef,
 #
 # #####[*kc_email_notifications*]
 #   - Enables email notifications to be sent
@@ -45,7 +45,7 @@
 
 class kualicoeus::config::kc_notifications (
   # KC-GEN | KC related email parameters
-  $kc_database_type, # Choices are 'ORACLE' or 'MYSQL'
+  $kc_database_type, # Set this to either 'MYSQL' or 'ORACLE'.
   $kc_email_notifications, # Enables email notifications to be sent
   $kc_email_notification_from_address, # KC Email Service uses this param to set the default from address for sending email notifications
   $kc_email_notification_test_enabled, # Set email notifications to TEST MODE
