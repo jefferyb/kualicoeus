@@ -27,7 +27,7 @@
 # === Examples
 #
 #  class { 'kualicoeus::config::kc_notifications':
-#    database_type                      => 'ORACLE',
+#    kc_database_type                   => 'ORACLE',
 #    kc_email_notifications             => 'Y',
 #    kc_email_notification_from_address => 'kc-email-notif@example.com',
 #    kc_email_notification_test_enabled => 'Y',
@@ -45,18 +45,22 @@
 
 class kualicoeus::config::kc_notifications (
   # KC-GEN | KC related email parameters
-  $database_type = $kualicoeus::database_type,
+  $kc_database_type, # Choices are 'ORACLE' or 'MYSQL'
   $kc_email_notifications, # Enables email notifications to be sent
   $kc_email_notification_from_address, # KC Email Service uses this param to set the default from address for sending email notifications
   $kc_email_notification_test_enabled, # Set email notifications to TEST MODE
   $kc_email_notification_test_address, # Email notifications will be sent to this id if EMAIL_NOTIFICATION_TEST_ENABLED ($kc_email_notification_test_enabled) set to Y
   ) {
-  if $database_type == 'ORACLE' {
+  if $kc_database_type == 'ORACLE' {
     $set_kc_paramaters_script = "sqlplus ${::kualicoeus::_datasource_username}/${::kualicoeus::_datasource_password}@${::kualicoeus::oracle_kc_install_dbsvrnm} < ${kualicoeus::kc_config_home}/config/kc_email_notifications.sql"
-  } elsif $database_type == 'MYSQL' {
+  } elsif $kc_database_type == 'MYSQL' {
     $set_kc_paramaters_script = "mysql -u ${::kualicoeus::_datasource_username} -p${::kualicoeus::_datasource_password} ${::kualicoeus::mysql_kc_install_dbsvrnm} < ${kualicoeus::kc_config_home}/config/kc_email_notifications.sql"
   } else {
-    fail("Database ${database_type} is not supported yet. Only 'MYSQL' and 'ORACLE' are supported")
+    fail("Database ${kc_database_type} is not supported yet. Only 'MYSQL' and 'ORACLE' are supported")
+  }
+
+  if $kc_database_type == undef {
+    fail("Please set 'kc_database_type'. e.g class { 'kualicoeus::config::kc_notifications': kc_database_type => 'ORACLE' }")
   }
 
   if $kc_email_notifications == undef {
@@ -87,7 +91,7 @@ class kualicoeus::config::kc_notifications (
     group   => 'root',
     mode    => '0744';
   } ->
-  exec { "Setting KC email notifications parameters in your ${database_type} database":
+  exec { "Setting KC email notifications parameters in your ${kc_database_type} database":
     command     => "bash -c 'export TNS_ADMIN=${::kualicoeus::tnsnames_location}; ${set_kc_paramaters_script}'",
     subscribe   => File["${kualicoeus::kc_config_home}/config/kc_email_notifications.sql"],
     refreshonly => true,

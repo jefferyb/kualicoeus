@@ -43,14 +43,18 @@ class kualicoeus::config::kew_notifications (
   $kew_email_notifications,
   $kew_from_address, # Default from email address for notifications
   $kew_email_notification_test_address, # Default email address used for testing
-  $database_type = $kualicoeus::database_type,) {
+  $kew_database_type = $kualicoeus::database_type,) {
     
-  if $database_type == 'ORACLE' {
+  if $kew_database_type == 'ORACLE' {
     $set_kew_paramaters_script = "sqlplus ${::kualicoeus::_datasource_username}/${::kualicoeus::_datasource_password}@${::kualicoeus::oracle_kc_install_dbsvrnm} < ${kualicoeus::kc_config_home}/config/kew_email_notifications.sql"
-  } elsif $database_type == 'MYSQL' {
+  } elsif $kew_database_type == 'MYSQL' {
     $set_kew_paramaters_script = "mysql -u ${::kualicoeus::_datasource_username} -p${::kualicoeus::_datasource_password} ${::kualicoeus::mysql_kc_install_dbsvrnm} < ${kualicoeus::kc_config_home}/config/kew_email_notifications.sql"
   } else {
-    fail("Database ${database_type} is not supported yet. Only 'MYSQL' and 'ORACLE' are supported")
+    fail("Database ${kew_database_type} is not supported yet. Only 'MYSQL' and 'ORACLE' are supported")
+  }
+
+  if $kew_database_type == undef {
+    fail("Please set 'kew_database_type'. e.g class { 'kualicoeus::config::kew_notifications': kew_database_type => 'ORACLE' }")
   }
 
   if $kew_email_notifications == undef {
@@ -77,7 +81,7 @@ class kualicoeus::config::kew_notifications (
     group   => 'root',
     mode    => '0744';
   } ->
-  exec { "Setting KEW email notifications parameters in your ${database_type} database":
+  exec { "Setting KEW email notifications parameters in your ${kew_database_type} database":
     command     => "bash -c 'export TNS_ADMIN=${::kualicoeus::tnsnames_location}; ${set_kew_paramaters_script}'",
     subscribe   => File["${kualicoeus::kc_config_home}/config/kew_email_notifications.sql"],
     refreshonly => true,
