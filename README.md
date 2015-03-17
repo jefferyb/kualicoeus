@@ -13,9 +13,13 @@
 5. [Limitations](#limitations)
 6. [Development](#development)
 
-##Working on | NOT DONE
+##Working on | NOT DONE YET
 STILL WORKING ON THE DOCUMENTATION FOR THIS MODULE.
 You can still check the init.pp in the manifests folder for the parameters that you can use.
+
+P.S: Please, if you find any bugs or somethings that needs to be fixed, please submit a new issue at https://github.com/jefferyb/kualicoeus/issues
+
+
 
 ## What's NEW!!!
 v. 1.3.7:
