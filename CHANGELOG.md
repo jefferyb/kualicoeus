@@ -1,3 +1,11 @@
+##2015-03-17 - Release 1.3.7
+
+Added a number of features and fixes to this release. The main ones being:
+- Added Shibboleth
+- Added P6Spy to log all SQL statement and parameter values before send it to database
+- Support to install KC 5.1 - 6.0
+- Support to do upgrades
+
 ##2014-12-02 - Supported Release 0.1.4
 
 This was just a bug fix, where whenever you set `setup_tomcat => false`, it would complain.

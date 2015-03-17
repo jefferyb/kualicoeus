@@ -13,7 +13,17 @@
 5. [Limitations](#limitations)
 6. [Development](#development)
 
+##Working on | NOT DONE
+STILL WORKING ON THE DOCUMENTATION FOR THIS MODULE.
+You can still check the init.pp in the manifests folder for the parameters that you can use.
+
 ## What's NEW!!!
+v. 1.3.7:
+- Added Shibboleth
+- Added P6Spy to log all SQL statement and parameter values before send it to database
+- Support to install KC 5.1 - 6.0
+- Support to do upgrades
+
 v. 0.1.4:
   * This was just a bug fix, where whenever you set `setup_tomcat => false`, it would complain.
 
@@ -59,11 +69,133 @@ in your manifests/site.pp file
  
 
 ## Usage
- To try it on an Oracle XE 11g Database (Using docker: alexeiled/docker-oracle-xe-11g )
+
+Here's a simple configuration that I use on some of our system:
+
+```puppet
+### SETTINGS FOR EACH HOST
+case $hostname {
+  'kcdev' : {
+    $setup_my_shibboleth = false
+    $my_database = 'KAULI'
+    $my_database_pw = '123qwert987'
+    $my_database_version = '6.0'
+    $my_kc_version = '6.0'
+    $my_kc_war_name = 'kc-dev.war'
+    $my_kc_install_demo = true
+  }
+  'kctst' : {
+    $setup_my_shibboleth = true
+    $my_database = 'COEUS'
+    $my_database_pw = '54321zxcvbnm67890'
+    $my_database_version = '5.2'
+    $my_kc_version = '5.2'
+    $my_kc_war_name = 'kc-ptd.war'
+    $my_kc_war_source = 'puppet:///modules/kualicoeus/kc-ptd-dev-5.2.war'
+    $my_kc_install_demo = false
+    $my_shib_idpURL = 'https://idp.testshib.org/idp/shibboleth'
+  }
+  default : {
+    $setup_my_shibboleth = true
+    $my_database = 'COEUS'
+    $my_database_pw = '54321zxcvbnm67890'
+    $my_database_version = '5.2'
+    $my_kc_version = '5.2'
+    $my_kc_war_name = 'kc-ptd.war'
+    $my_kc_war_source = 'puppet:///modules/kualicoeus/kc-ptd-dev-5.2.war'
+    $my_kc_install_demo = false
+    $my_shib_idpURL = 'https://idp.testshib.org/idp/shibboleth'
+  }
+}
+
+############################################################################
+### SETUP SQL+PLUS AND TNSNAMES.ORA ON THE SYSTEM #####
+class { 'kualicoeus::config::sqlplus':
+  oracle_service_name => $my_database, # SET oracle_kc_install_dbsvrnm ALSO
+  oracle_hostname     => 'database.example.com',
+  oracle_port         => '1521',
+  tnsnames_location   => '/opt/oracle',
+} ->
+############################################################################
+### SETUP KUALI COEUS #################
+class { 'kualicoeus':
+  deactivate_firewall           => false,
+  setup_database                => false,
+  #### CURRENT DATABASE
+  kc_version                    => $my_kc_version,
+  oracle_kc_install_dbsvrnm     => $my_database,
+  #### RUN THE UPGRADE FROM 5.2 to 6.0
+  #    kc_version          => '5.2',
+  #    setup_kuali_upgrade => true,
+  #    kc_upgrade_version  => '6.0',
+  #    kc_upgrade_file     => 'kc-release-6_0.zip',
+  #    kc_upgrade_dl_link  => 'http://downloads.kc.kuali.org/6.0/kc-release-6_0.zip',
+
+  #### INSTALL DEMO DATA
+  kc_install_demo               => $my_kc_install_demo,
+  ### KC APPLICATION SETTINGS
+  kc_war_name                   => $my_kc_war_name,
+  kc_war_source                 => $my_kc_war_source,
+  db_driver_name                => 'ojdbc6.jar',
+  db_driver_url                 => 'puppet:///modules/kualicoeus/ojdbc6.jar',
+  database_type                 => 'ORACLE',
+  application_http_scheme       => 'https',
+  http_port                     => '',
+  kc_environment                => 'srv',
+  build_version                 => $my_kc_version,
+  datasource_url                => "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=database.example.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=${my_database})))",
+  datasource_username           => 'dbuser',
+  datasource_password           => $my_database_pw,
+  mail_from                     => "no-reply@${::fqdn}",
+  mailmessage_from              => "no-reply@${::fqdn}",
+  kr_incident_mailing_list      => 'admin@example.com',
+  encryption_key                => '3IC32w6kZMXN',
+  ### Shibboleth Settings:
+  setup_shibboleth              => $setup_my_shibboleth,
+  shib_session_location         => 'kc-dev',
+  shib_sslSessionCacheTimeout   => '1200',
+  shib_provider_reload_interval => '600',
+  shib_create_ssl_cert          => false,
+  shib_sslCertificateChainFile  => true,
+  shib_provider_uri             => 'http://www.testshib.org/metadata/testshib-providers.xml',
+  shib_backingFileName          => 'idp.xml',
+  shib_idpURL                   => $my_shib_idpURL,
+  ### P6spy Settings:
+  setup_p6spy                   => false,
+  # datasource_url    			=> "jdbc:p6spy:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=database.example.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=$my_database)))",
+} ->
+############################################################################
+### APPLY OUR OWN CUSTOMIZATIONS ###
+
+#  class { 'kc_customizations': }
+
+############################################################################
+### TURN ON/OFF EMAIL NOTIFICATIONS ###
+
+class { 'kualicoeus::config::kew_notifications':
+  kew_database_type                   => 'ORACLE',
+  kew_email_notifications             => 'Y',
+  kew_from_address                    => "kew-no-reply@${::fqdn}",
+  kew_email_notification_test_address => 'admin@example.com',
+}
+
+class { 'kualicoeus::config::kc_notifications':
+  kc_database_type                   => 'ORACLE',
+  kc_email_notifications             => 'Y',
+  kc_email_notification_from_address => "kc-no-reply@${::fqdn}",
+  kc_email_notification_test_enabled => 'Y',
+  kc_email_notification_test_address => 'admin@example.com',
+}
+
+############################################################################
+
+```
+
+Already have your database setup? Install everything but the database. 
 ```puppet
 class { 'kualicoeus': 
-    database_type    => 'ORACLE',
- }
+  setup_database => false,
+}
 ```
 To change where to access the application & port (e.g if you're running/testing in vagrant). See the kc-config.xml section settings.
 ```puppet
@@ -78,15 +210,10 @@ class { 'kualicoeus':
   deactivate_firewall => false,
 }
 ```
-Already have your database setup? Install everything but the database. 
-```puppet
-class { 'kualicoeus': 
-  setup_database => false,
-}
-```
 To turn on/off KEW e-mail notifications
 ```puppet
 class { 'kualicoeus::config::kew_notifications':
+	kew_database_type                   => 'ORACLE',
     kew_email_notifications             => 'Y',
     kew_from_address                    => 'kew.notifications@dev.example.edu',
     kew_email_notification_test_address => 'root@dev.example.edu',
@@ -95,6 +222,8 @@ class { 'kualicoeus::config::kew_notifications':
 To turn on/off KC e-mail notifications
 ```puppet
 class { 'kualicoeus::config::kc_notifications':
+	kc_database_type                   => 'ORACLE',
+    kc_email_notifications             => 'Y',
     kc_email_notification_from_address => 'kc.notifications@dev.example.edu',
     kc_email_notification_test_enabled => 'Y',
     kc_email_notification_test_address => 'root@dev.example.edu',
@@ -118,6 +247,12 @@ To remove WAR file and directory:
 class { 'kualicoeus': 
   kc_war_ensure => 'absent', 
 } 
+```
+To try it on an Oracle XE 11g Database (Using docker: alexeiled/docker-oracle-xe-11g )
+```puppet
+class { 'kualicoeus': 
+    database_type    => 'ORACLE',
+ }
 ```
 
 

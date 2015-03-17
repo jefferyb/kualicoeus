@@ -9,7 +9,7 @@
 # Learn more about module testing here:
 # http://docs.puppetlabs.com/guides/tests_smoke.html
 #
-# ## SETTINGS FOR EACH HOST
+### SETTINGS FOR EACH HOST
 case $hostname {
   'kcdev' : {
     $setup_my_shibboleth = false
@@ -108,12 +108,14 @@ class { 'kualicoeus':
 ### TURN ON/OFF EMAIL NOTIFICATIONS ###
 
 class { 'kualicoeus::config::kew_notifications':
+  kew_database_type                   => 'ORACLE',
   kew_email_notifications             => 'Y',
   kew_from_address                    => "kew-no-reply@${::fqdn}",
   kew_email_notification_test_address => 'admin@example.com',
 }
 
 class { 'kualicoeus::config::kc_notifications':
+  kc_database_type                   => 'ORACLE',
   kc_email_notifications             => 'Y',
   kc_email_notification_from_address => "kc-no-reply@${::fqdn}",
   kc_email_notification_test_enabled => 'Y',
